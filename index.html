@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Para mi amorcito</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffc3da;
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .message {
+            font-size: 50px;
+            font-weight: bold;
+            color: #FF6863;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease;
+        }
+        .envelope-wrapper {
+            height: 380px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #envelope {
+            position: relative;
+            height: 180px;
+            width: 280px;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            background-color: #FF6863;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1;
+        }
+        .front {
+            position: absolute;
+            width: 0;
+            height: 0;
+            z-index: 3;
+        }
+        .flap {
+            border-top: 98px solid #FF6863;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-bottom: 82px solid transparent;
+            transform-origin: top;
+            z-index: 4;
+            transition: transform 0.4s ease;
+        }
+        .pocket {
+            border-left: 140px solid #FF8BA0;
+            border-right: 140px solid #FF8BA0;
+            border-bottom: 90px solid #FFA8B5;
+            border-top: 90px solid transparent;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            z-index: 6;
+        }
+        .letter {
+            position: absolute;
+            background-color: white;
+            width: 80%;
+            height: 78%;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(100%);
+            border-radius: 10px;
+            box-shadow: 0 2px 26px rgba(0, 0, 0, .12);
+            text-align: center;
+            padding: 20px;
+            z-index: 2;
+            transition: transform 0.4s ease;
+        }
+        .words {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .buttons button {
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        #yes {
+            background-color: #FF6863;
+            color: white;
+        }
+        #yes:hover {
+            transform: scale(1.1);
+        }
+        #no {
+            background-color: #555;
+            color: white;
+        }
+        #no:hover {
+            transform: scale(1.1);
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            transition: font-size 0.4s ease;
+        }
+        .hidden {
+            display: none;
+        }
+        .open .flap {
+            transform: rotateX(180deg);
+        }
+        .open .letter {
+            transform: translateX(-50%) translateY(-80%);
+            z-index: 5;
+        }
+        .close .letter {
+            transform: translateX(-50%) translateY(0%);
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Estilo para el nuevo botón que aparece tras hacer clic en el botón "No" */
+        #movingNo {
+            position: absolute;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            background-color: #555;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            display: none; /* Inicialmente oculto */
+        }
+
+        /* Animación de aumento de tamaño cuando se pasa el mouse */
+        #movingNo:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="message">¡Amor mio, este es un detalle con mucho amor por ti, <br> una carta que tal vez no sean como las demás,<br> pero que lleva un mensaje muy importante! 🌹</div>
+    <div class="envelope-wrapper">
+        <div id="envelope" class="close">
+            <div class="front flap"></div>
+            <div class="front pocket"></div>
+            <div class="letter">
+                <p class="words">¿Quieres ser mi San Valentín?</p>
+                <div class="buttons">
+                    <button id="yes">Sí 😃</button>
+                    <button id="no">No ❤️</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="message" class="hidden"></div>
+
+    <!-- Nuevo botón fuera del sobre -->
+    <button id="movingNo">No 😞</button>
+
+    <script>
+        document.getElementById("envelope").addEventListener("click", function() {
+            const envelope = this;
+            if (envelope.classList.contains("open")) {
+                document.querySelector(".letter").style.transform = "translateX(-50%) translateY(0%)";
+                setTimeout(function() {
+                    envelope.classList.remove("open");
+                    document.querySelector(".flap").style.transform = "rotateX(0deg)";
+                }, 400);
+            } else {
+                envelope.classList.add("open");
+                document.querySelector(".flap").style.transform = "rotateX(180deg)";
+                setTimeout(function() {
+                    document.querySelector(".letter").style.transform = "translateX(-50%) translateY(-80%)";
+                }, 200);
+            }
+        });
+
+        document.getElementById("yes").addEventListener("mouseover", function() {
+            this.innerHTML = "Sí 😍";
+        });
+
+        document.getElementById("yes").addEventListener("mouseout", function() {
+            this.innerHTML = "Sí 😃";
+        });
+
+        document.getElementById("no").addEventListener("mouseover", function() {
+            this.innerHTML = "No 💔";
+        });
+
+        document.getElementById("no").addEventListener("mouseout", function() {
+            this.innerHTML = "No ❤️";
+        });
+
+        document.getElementById("no").addEventListener("click", function() {
+            const movingButton = document.getElementById("movingNo");
+            const message = document.getElementById("message");
+
+            // Mostrar el nuevo botón fuera del sobre
+            movingButton.style.display = "block";
+            
+            // Mostrar mensaje y cambiar el tamaño de la fuente
+            message.classList.remove("hidden");
+            message.style.fontSize = "80px";
+            message.textContent = getRandomMessage();  // Cambiar la frase al azar
+
+            // Mover el botón a una nueva posición aleatoria
+            moveButton(movingButton);
+
+            // Hacer desaparecer el botón dentro de la carta
+            document.getElementById("no").style.display = "none";
+        });
+
+        function moveButton(button) {
+            const maxX = window.innerWidth - button.offsetWidth;
+            const maxY = window.innerHeight - button.offsetHeight;
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            button.style.left = `${randomX}px`;
+            button.style.top = `${randomY}px`;
+        }
+
+        // Mover el botón de forma inicial
+        moveButton(document.getElementById("movingNo"));
+
+        // Cambiar el icono del botón cuando se pasa el mouse
+        const movingButton = document.getElementById("movingNo");
+
+        movingButton.addEventListener("mouseover", function() {
+            this.innerHTML = "No 😢"; // Cambiar icono a cara llorando
+        });
+
+        movingButton.addEventListener("mouseout", function() {
+            this.innerHTML = "No 😞"; // Cambiar icono a cara triste
+        });
+
+        // Mover el botón de forma aleatoria al hacer clic
+        movingButton.addEventListener("click", function() {
+            moveButton(this);
+
+            // Cambiar la frase debajo de la carta cada vez que se haga clic
+            const message = document.getElementById("message");
+            message.textContent = getRandomMessage();
+        });
+
+        function getRandomMessage() {
+            const messages = [
+                "¡Quizás en otra vida! 😔",
+                "¡Está bien, sigamos siendo amigos! 💔",
+                "No te preocupes, ¡todo bien! 🌹",
+                "¡Me arriesgué, pero igual te quiero! 😢"
+            ];
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+
+        // Agregar funcionalidad para el botón de Sí
+        document.getElementById("yes").addEventListener("click", function() {
+            const message = document.getElementById("message");
+
+            // Mostrar mensaje con la respuesta positiva
+            message.classList.remove("hidden");
+            message.style.fontSize = "80px";
+            message.textContent = "¡Sabría que me elegirías, por eso te amo! 💖";
+
+            // Hacer desaparecer el botón "No" fuera de la carta
+            document.getElementById("movingNo").style.display = "none";
+
+            // Opcional: Puedes añadir un efecto de animación al mensaje
+            message.style.transition = "opacity 1s ease";
+            message.style.opacity = "1";
+        });
+    </script>
+</body>
+</html>
